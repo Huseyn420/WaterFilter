@@ -2,7 +2,6 @@
 
 
 #include "CylindricalFilter.h"
-#include "WaterMolecules.h"
 
 ACylindricalFilter::ACylindricalFilter()
 {
@@ -22,6 +21,7 @@ void ACylindricalFilter::BeginPlay()
 	DrawOuterCylinder();
 	SettingParametersInnerCylinder();
 	CreateWaterMolecules();
+	SetupPlayerInputComponent();
 }
 
 void ACylindricalFilter::DrawOuterCylinder() 
@@ -55,10 +55,8 @@ void ACylindricalFilter::SettingParametersInnerCylinder()
 
 void ACylindricalFilter::CreateWaterMolecules()
 {
-	FVector Location = 
-		GetActorLocation() + FVector(0, 0, (CylinderHeight + CylindersDelta) * 2.0f);
-	AWaterMolecules* WaterMolecules = 
-		GetWorld()->SpawnActor<AWaterMolecules>(Location, GetActorRotation());
+	FVector Location = GetActorLocation() + FVector(0, 0, (CylinderHeight + CylindersDelta) * 2.0f);
+	WaterMolecules = GetWorld()->SpawnActor<AWaterMolecules>(Location, GetActorRotation());
 
 	WaterMolecules->SphereDiameter = SphereDiameter;
 	WaterMolecules->SphereDiameterTolerance = SphereDiameterTolerance;
@@ -111,4 +109,31 @@ void ACylindricalFilter::SetupInnerCylinderMesh()
 	{
 		InnerCylinderMesh->SetMaterial(0, AssetMaterial.Object);
 	}
+}
+
+void ACylindricalFilter::SetupPlayerInputComponent()
+{
+	EnableInput(GetWorld()->GetFirstPlayerController());
+	UInputComponent* myInputComp = this->InputComponent;
+
+	if (myInputComp) 
+	{
+		myInputComp->BindAction("FreezeMolecules", IE_Pressed, this, &ACylindricalFilter::FreezeButtonPressed);
+		myInputComp->BindAction("ChangeVisibilityCylinders", IE_Pressed, this, &ACylindricalFilter::ChangeVisibilityCylinders);
+	}
+}
+
+void ACylindricalFilter::FreezeButtonPressed()
+{
+	if (WaterMolecules)
+	{
+		WaterMolecules->FreezeButtonPressed();
+	}
+}
+
+void ACylindricalFilter::ChangeVisibilityCylinders()
+{
+	bool Visibility = !(InnerCylinderMesh->bHiddenInGame);
+	InnerCylinderMesh->SetHiddenInGame(Visibility);
+	OuterCylinderMesh->SetHiddenInGame(Visibility);
 }

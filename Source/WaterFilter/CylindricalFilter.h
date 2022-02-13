@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "WaterMolecules.h"
+
 #include "CylindricalFilter.generated.h"
 
 UCLASS()
@@ -39,6 +41,7 @@ public:
 
 private:
 	USceneComponent* Scene;
+	AWaterMolecules* WaterMolecules;
 
 	const float ScaleFactor = 100.0f;
 
@@ -51,4 +54,7 @@ private:
 	void CreateWaterMolecules();
 	void SetupOuterCylinderMesh();
 	void SetupInnerCylinderMesh();
+	void SetupPlayerInputComponent();
+	void FreezeButtonPressed();
+	void ChangeVisibilityCylinders();
 };

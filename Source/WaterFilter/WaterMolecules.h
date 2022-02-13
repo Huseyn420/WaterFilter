@@ -11,7 +11,7 @@ UCLASS()
 class WATERFILTER_API AWaterMolecules : public AActor
 {
 	GENERATED_BODY()
-	
+
 public:
 	AWaterMolecules();
 
@@ -24,6 +24,8 @@ public:
 	int ParticlesHeight = 600;
 	int OuterCylinderDiameter = 300;
 
+	bool FreezeStates = true;
+
 private:
 	USceneComponent* Scene;
 	TArray< USphereComponent*> CollisionComponents;
@@ -34,6 +36,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	void CreateCloudMolecules();
+	void FreezeButtonPressed();
 
 private:
 	void SetupWaterMoleculesMesh();

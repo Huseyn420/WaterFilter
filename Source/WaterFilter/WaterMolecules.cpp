@@ -17,13 +17,16 @@ void AWaterMolecules::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	int CollisionComponentsCount = CollisionComponents.Num();
-	for (int i = 0; i < CollisionComponentsCount; i++)
+	if (!FreezeStates)
 	{
-		FTransform transform = CollisionComponents[i]->GetRelativeTransform();
-		WaterMoleculesMesh->UpdateInstanceTransform(
-			i, transform, true, i == CollisionComponentsCount - 1, true
-		);
+		int CollisionComponentsCount = CollisionComponents.Num();
+		for (int i = 0; i < CollisionComponentsCount; i++)
+		{
+			FTransform transform = CollisionComponents[i]->GetRelativeTransform();
+			WaterMoleculesMesh->UpdateInstanceTransform(
+				i, transform, true, i == CollisionComponentsCount - 1, true
+			);
+		}
 	}
 }
 
@@ -68,7 +71,7 @@ void AWaterMolecules::CreateCollisionComponent(FTransform Transform)
 	SphereComponent->SetCollisionProfileName("BlockAll");
 	SphereComponent->SetRelativeTransform(Transform);
 	SphereComponent->SetEnableGravity(1);
-	SphereComponent->SetSimulatePhysics(1);
+	SphereComponent->SetSimulatePhysics(!FreezeStates);
 
 	SphereComponent->SetupAttachment(RootComponent);
 	CollisionComponents.Add(SphereComponent);
@@ -98,4 +101,14 @@ void AWaterMolecules::SetupWaterMoleculesMesh()
 	{
 		WaterMoleculesMesh->SetMaterial(0, AssetMaterial.Object);
 	}
+}
+
+void AWaterMolecules::FreezeButtonPressed()
+{
+	for (int i = 0; i < CollisionComponents.Num(); i++)
+	{
+		CollisionComponents[i]->SetSimulatePhysics(FreezeStates);
+	}
+
+	FreezeStates = !(FreezeStates);
 }
