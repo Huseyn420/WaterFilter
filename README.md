@@ -1,5 +1,5 @@
 # Моделирование гранульного водяного фильтра
-### Постановка задачи:
+## Постановка задачи:
 Необходимо реализовать визуализацию создания гранульного фильтра и пропуска через него молекул воды на Unreal Engine 4.
 
 **Для этого задачу декомпозировать на следующие:**
@@ -24,6 +24,8 @@
 * scaleFactor
 * particlesH
 
-На выходе должно получить примерно следующее:
-![image](https://user-images.githubusercontent.com/60943542/153754904-704ed3ae-bcc0-4749-b0da-cb394d14a64c.png)
+## Результаты:
+<p align="center">
+<img src="https://user-images.githubusercontent.com/60943542/177039016-b18685c3-d668-4493-b447-780d073ae6ee.png" width="45%" height="45%" /> <img src="https://user-images.githubusercontent.com/60943542/177038994-0d969203-ae53-4a9e-af13-5ed428d4574a.png" width="45%" height="45%" />
+</p>
 
